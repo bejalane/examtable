@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="test">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Alex Test</title>
+	<link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
+	<link rel="stylesheet" href="css/style.css">
+	<script type="text/javascript" src="js/angular.min.js"></script>
+	<script type="text/javascript" src="js/app.js"></script>
+</head>
+<body ng-controller="usersCtrl">
+
+<div id="back-overlay" ng-click="modalclose()"></div>
+	<div class="container">
+
+		<form class="search-form" ng-submit="submit()">
+			<select name="" id="" ng-model="searchby">
+				<option value="" selected>Search by</option>
+				<option value="username">UserName</option>
+				<option value="fullname">Full Name</option>
+				<option value="address">Address</option>
+			</select>
+			<input type="text" ng-model="search" ng-change="resetSearch()">
+			<input type="submit" class="submit" value="Search">
+		</form>
+
+		<div>
+		  <table class="friend">
+		    <tr>
+		      <th ng-click="sortType = 'user'; sortReverse = !sortReverse">&#9662; UserName</th>
+		      <th ng-click="sortType = 'name'; sortReverse = !sortReverse">&#9662; Full Name</th>
+		      <th ng-click="sortType = 'bill'; sortReverse = !sortReverse">&#9662; Bill</th>
+		      <th ng-click="sortType = 'address'; sortReverse = !sortReverse">&#9662; Address</th>
+		      <th ng-click="sortType = 'active'; sortReverse = !sortReverse">&#9662; Active</th>
+		      <th>&#9662; </th>
+		    </tr>
+		    <tr ng-repeat="user in users | orderBy:sortType:sortReverse" ng-show="user.show">
+		      <td>{{user.username}}</td>
+		      <td>{{user.firstname}} {{user.lastname}}</td>
+		      <td>{{user.bill}}</td>
+		      <td>{{user.address}}</td>
+		      <td class="active-check"><input type="checkbox" ng-model="user.active" ng-change="changeDone($index)"></td>
+		      <td ng-click="modal(user.id)" class="details">Details</td>
+		    </tr>
+		  </table>
+		</div>
+
+		<form class="modal" id="modal" name="modalForm" novalidate ng-submit="modalForm.$valid && updateInfo()">
+			<label for="username">Username</label>
+			<input type="text" name="username" id="username" ng-model="formchange[0]" ng-minlength="3" required>
+			<label for="firstname">First Name</label>
+			<input type="text" name="firstname" id="firstname" ng-model="formchange[1]" ng-minlength="3" required>
+			<label for="lastname">Last Name</label>
+			<input type="text" name="lastname" id="lastname" ng-model="formchange[2]" ng-minlength="3" required>
+			<label for="address">Address</label>
+			<input type="text" name="address" id="address" ng-model="formchange[3]" ng-minlength="3" required>
+
+			<input ng-click="modalclose()" type="button" value="Cancel" class="cancel" />
+			<input type="submit" class="modalsubmit" value="Update" ng-disabled="modalForm.$invalid"/>
+		</form>
+
+	</div>
+</body>
+</html>
